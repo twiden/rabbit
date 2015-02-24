@@ -34,7 +34,7 @@ if __name__ == '__main__':
     for i in xrange(n_consumers):
         t = Consumer(i, 0, rabbit_mq_factory())
         Process(target=t.run).start()
-
+    time.sleep(10)
     for i in xrange(n_producers):
         t = Producer(i, n_messages, rabbit_mq_factory())
         Process(target=t.run).start()

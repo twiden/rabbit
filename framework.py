@@ -188,7 +188,8 @@ class Produce(object):
 
     def provide(self, channel, exchange):
         PERSISTANT = 2
-        channel.confirm_delivery()
+        # channel.confirm_delivery()
+        channel.tx_select()
         if not channel.basic_publish(
                 exchange=exchange,
                 routing_key=self.routing_key,
@@ -196,6 +197,7 @@ class Produce(object):
                 properties=pika.BasicProperties(delivery_mode=PERSISTANT),
                 mandatory=True):
             raise ProduceError('exchange=%s routing_key=%s message=%s' % (exchange, self.routing_key, str(self.message)))
+        channel.tx_commit()
 
 
 class Consume(object):
